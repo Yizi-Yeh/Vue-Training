@@ -46,7 +46,8 @@
       <div class="box">
         <div>
           <img
-            v-for="item in imgArr.arr"
+            v-for="(item,i) in imgArr.arr"
+            v-show="imgIdx===i"
             :src="item.url"
             :key="item.url"
             class="img"
@@ -55,8 +56,8 @@
           />
         </div>
         <div class="btnbox">
-          <a href="javascript:;">上一張</a>
-          <a href="javascript:;">下一張</a>
+          <a @click="imgRemove" href="javascript:;">上一張</a>
+          <a @click="imgAdd" href="javascript:;">下一張</a>
         </div>
       </div>
       <img class="load" src="./images/load.gif" alt="" />
@@ -64,11 +65,27 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
     <script src="./js/vue.js"></script>
     <script>
-      const { onMounted, reactive } = Vue;
+      const { onMounted, reactive, ref } = Vue;
       const app = {
         // setup => 在createApp 的階段執行（但DOM的渲染未完成）
         setup() {
           const imgArr = reactive({ arr: [] });
+
+          const imgIdx = ref(0);
+
+          const imgAdd = () => {
+            imgIdx.value++;
+            if (imgIdx.value > imgArr.arr.length) {
+              imgIdx.value = 0;
+            }
+          };
+
+          const imgRemove = () => {
+            imgIdx.value--;
+            if (imgIdx.value < 0) {
+              imgIdx.value = imgArr.arr - 1;
+            }
+          };
           // onMounted 在 DOM元素渲染完成後才執行
           onMounted(() => {
             //最好在DOM元素皆渲染完後再抓取遠端資料
@@ -82,6 +99,8 @@
           });
           return {
             imgArr,
+            imgAdd,
+            imgRemove,
           };
         },
       };
