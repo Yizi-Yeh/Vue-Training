@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>reactive</title>
+  </head>
+  <body>
+    <div id="app">
+      <h1>{{message.text}}</h1>
+    </div>
+    <script src="./js/vue.js"></script>
+    <script>
+      const { reactive } = Vue;
+      const App = {
+        setup() {
+          //reactive 只接受物件或陣列
+          const message = reactive({ text: "yizi" });
+          return {
+            message,
+          };
+        },
+      };
+      Vue.createApp(App).mount("#app");
+    </script>
+  </body>
+</html>

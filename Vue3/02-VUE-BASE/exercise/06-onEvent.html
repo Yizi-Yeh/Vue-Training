@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>v-on:Event</title>
+  </head>
+  <body>
+    <div id="app">
+      <h1>{{num}}{{NumData.idx}}</h1>
+      <button @click="Addfn">Add</button>
+      <button @click="Removefn">Remove</button>
+    </div>
+    <script src="./js/vue.js"></script>
+    <script>
+      const { ref, reactive } = Vue;
+      const App = {
+        setup() {
+          // ref.value => 值所在
+          const num = ref(0);
+          const NumData = reactive({ idx: 0 });
+          // 使用function
+          const Addfn = () => {
+            // 利用value屬性操作值
+            num.value++;
+            NumData.idx++;
+          };
+          const Removefn = () => {
+            num.value--;
+            NumData.idx--;
+          };
+
+          return { num, Addfn, Numdata };
+        },
+      };
+      Vue.createApp(App).mount("#app");
+    </script>
+  </body>
+</html>

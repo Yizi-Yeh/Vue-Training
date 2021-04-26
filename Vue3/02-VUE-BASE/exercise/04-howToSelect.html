@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>howToSelect</title>
+  </head>
+  <body>
+    <div id="app">{{text}} {{message.text}}</div>
+    <script src="./js/vue.js"></script>
+    <script>
+      const { ref, reactive };
+      const App = {
+        setup() {
+          // ref 定義任何型別資料
+          const text = ref("hello vue");
+          // 物件或陣列
+          // 可作深層監聽
+          const message = reactive({ text: "yizi" });
+          return {
+            text,
+            message,
+          };
+        },
+      };
+      Vue.createApp(App).mount("#app");
+    </script>
+  </body>
+</html>

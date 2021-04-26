@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Computed</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        background-color: slategray;
+      }
+      #app {
+        width: 400px;
+        overflow: hidden;
+        border: 1px solid #42b983;
+        border-radius: 10px;
+      }
+      .title {
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 50px;
+        background-color: #42b983;
+        font-weight: bold;
+        color: darkslategray;
+        font-size: 20px;
+        border-bottom: 1px solid #d2d2d2;
+      }
+      .box {
+        display: block;
+        width: 100%;
+        height: 0;
+        background-color: snow;
+        transition: height 0.4s;
+      }
+      .box > li {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 40px;
+        border-bottom: 1px solid #d2d2d2;
+        font-size: 12px;
+        color: darkslategray;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <a @click="HandListShow" class="title">課程列表</a>
+      <ul class="box" :style="{height : domFn}">
+        <li v-for="(list, idx) in newArr " :key="list.course">
+          {{list.course}}
+        </li>
+      </ul>
+    </div>
+    <script src="./js/vue.js"></script>
+    <script>
+      const { ref, reactive, computed } = Vue;
+      const App = {
+        setup() {
+          //ref 存放布林
+          const isOpen = ref(true);
+          //reactive 存放陣列
+          const listArr = reactive([
+            { name: "2020 Vue3 專業職人 | 入門篇", money: 3200 },
+            { name: "2020 Vue3 專業職人 | 加值篇", money: 100 },
+            { name: "2020 Vue3 專業職人 | 進階篇", money: 500 },
+            { name: "現代 JavaScript 職人之路｜入門篇", money: 300 },
+            { name: "現代 JavaScript 職人之路｜中階實戰篇", money: 1600 },
+            { name: "職人必修的RWD 網頁入門班", money: 900 },
+            { name: "HTML5+Animate CC 網頁動畫與遊戲互動", money: 2000 },
+            { name: "現代 JavaScript 職人之路｜面試篇", money: 1800 },
+          ]);
+          //toggle
+          const HandListShow = () => {
+            isOpen.value = !isOpen.value;
+          };
+
+          // 利用 computed 計算（返回到畫面的計算應用）
+          // 資料會緩存（資料不會重新執行）
+          // 不可傳入參數做計算
+          const domH = computed(() => {
+            return isOpen.value ? `${listArr.length * 40}px` : 0;
+          });
+
+          const newArr = computed(() => {
+            // 透過map 返回新陣列
+            const map = listArr.map((item) => {
+              return { course: `${item.name} $:${item.money}` };
+            });
+          });
+
+          // methods
+          // 資料不會緩存
+          // 需要傳入參數做計算
+          const domFn = () => {
+            return isOpen.value ? `${listArr.length * 40}px` : 0;
+          };
+
+          return {
+            // 所有setup()內使用的接需return
+            isOpen,
+            listArr,
+            HandListShow,
+            domH,
+            domFn,
+            newArr,
+          };
+        },
+      };
+      Vue.createApp(App).mount("#app");
+    </script>
+  </body>
+</html>

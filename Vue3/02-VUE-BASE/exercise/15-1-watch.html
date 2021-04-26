@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Watch</title>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <script src="./js/vue.js"></script>
+    <script>
+      const { ref, reactive, watch } = Vue;
+      const App = {
+        setup() {
+          const idx = ref(0);
+          // 要針對單一key去做監控(因為是obj)
+          const data = reactive({ idx: 0 });
+
+          // 利用 watch 監控 ref值
+          //（要監控的值,值改變時觸發的callback)
+          watch(
+            // 先 return reactive 的 key
+            () => data.idx,
+            (newIdx, oldIndex) => {
+              console.log("new:", newIdx, "old:", oldIndex);
+            }
+          );
+          setInterval(() => {
+            data.idx++;
+          }, 1000);
+          return {};
+        },
+      };
+
+      Vue.createApp(App).mount("#app");
+    </script>
+  </body>
+</html>

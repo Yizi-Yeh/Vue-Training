@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>v-if and v-show</title>
+  </head>
+  <body>
+    <div id="app">
+      <!-- v-if 直接把DOM元素刪除 -->
+      <!-- v-if 減少渲染速度的效能 -->
+      <!-- 消耗資源較 v-show 高 -->
+      <h1 id="vue-if" v-if="isShow">{{Text}}</h1>
+      <!-- v-show 透過 display:none -->
+      <!-- 若經常需要作切換（tab)建議使用 v-show -->
+      <h1 id="vue-show" v-show="isShow">{{Text}}</h1>
+      <button @click="handDomShow">Hand Dom Show</button>
+    </div>
+    <script src="./js/vue.js"></script>
+    <script>
+      const { ref } = Vue;
+      const App = {
+        setup() {
+          const isShow = ref(false);
+          const Text = ref("Hello Vue!");
+
+          // toggle
+          const handDomShow = () => {
+            isShow.value = !isShow.value;
+          };
+          // 返回DOM元素
+          return {
+            Text,
+            isShow,
+            handDomShow,
+          };
+        },
+      };
+      Vue.createApp(App).mount("#app");
+    </script>
+  </body>
+</html>

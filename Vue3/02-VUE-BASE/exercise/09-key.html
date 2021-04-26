@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>key</title>
+  </head>
+  <body>
+    <div id="app">
+      <ul>
+        <!-- 使用 v-for 時 必須搭配 key（唯一索引）使用，作為v-for的唯一值 -->
+        <!-- index -> x // key 若會變動，將會導致資料渲染錯誤-->
+        <!-- 使用唯一值(不會變動的值)當作索引key -->
+        <li v-for="(list, idx) in listArr" :key="list.name" v-show="list.show">
+          {{idx + 1}}. {{list.name}}
+        </li>
+      </ul>
+    </div>
+    <script src="./js/vue.js"></script>
+    <script>
+      const { reactive } = Vue;
+      const App = {
+        setup() {
+          const listArr = reactive([
+            { name: "2020 Vue3 專業職人 | 入門篇", show: true },
+            { name: "2020 Vue3 專業職人 | 加值篇", show: false },
+            { name: "2020 Vue3 專業職人 | 進階篇", show: true },
+            { name: "現代 JavaScript 職人之路｜入門篇", show: true },
+            { name: "現代 JavaScript 職人之路｜中階實戰篇", show: false },
+          ]);
+          return {
+            listArr,
+          };
+        },
+      };
+      Vue.createApp(App).mount("#app");
+    </script>
+  </body>
+</html>

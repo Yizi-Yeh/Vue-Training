@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ref</title>
+  </head>
+  <body>
+    <div id="app">
+      <h1>{{text}}</h1>
+    </div>
+    <script src="./js/vue.js"></script>
+    <script>
+      // 解構ref變數
+      const { ref } = Vue;
+      const App = {
+        setup() {
+          //透過ref方法讓變數和 Vue 做綁定
+          let text = ref("hello vue");
+          let text2 = ref("hello vue2");
+          setTimeout(() => {
+            // 透過value屬性抓取資料
+            text.value = "yizi";
+            console.log(text);
+          }, 1000);
+          return {
+            // 將變數 return
+            text,
+          };
+        },
+      };
+      Vue.createApp(App).mount("#app");
+    </script>
+  </body>
+</html>
