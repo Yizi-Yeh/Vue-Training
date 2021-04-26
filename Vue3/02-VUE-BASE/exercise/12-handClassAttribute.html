@@ -62,8 +62,9 @@
   </head>
   <body>
     <div id="app">
-      <a class="title">課程列表</a>
-      <ul class="box">
+      <a @click="handOpenClass" class="title">課程列表</a>
+      <!-- 透過 class 的 open 控制畫面的開關 -->
+      <ul class="box" :class="{open: isOpen}">
         <li v-for="(list, idx) in listArr" :key="list.name">
           {{idx + 1}}. {{list.name}}
         </li>
@@ -71,9 +72,11 @@
     </div>
     <script src="./js/vue.js"></script>
     <script>
-      const { reactive } = Vue;
+      // open 開關利用布林值來控制，故先解構ref
+      const { reactive, ref } = Vue;
       const App = {
         setup() {
+          const isOpen = ref(true);
           const listArr = reactive([
             { name: "2020 Vue3 專業職人 | 入門篇" },
             { name: "2020 Vue3 專業職人 | 加值篇" },
@@ -82,8 +85,15 @@
             { name: "現代 JavaScript 職人之路｜中階實戰篇" },
           ]);
 
+          const handOpenClass = () => {
+            // 因為ref必須加上.value屬性取值
+            isOpen.value = !isOpen.value;
+          };
           return {
+            // 返回畫面
+            isOpen,
             listArr,
+            handOpenClass,
           };
         },
       };

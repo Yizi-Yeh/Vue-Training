@@ -16,7 +16,11 @@
   <body>
     <div id="app">
       <ul>
-        <li v-for="(list, idx) in listArr" v-bind:key="list.name">
+        <li
+          v-for="(list, idx) in listArr"
+          v-bind:key="list.name"
+          :class="listArr.status"
+        >
           {{idx + 1}}. {{list.name}}
         </li>
       </ul>
