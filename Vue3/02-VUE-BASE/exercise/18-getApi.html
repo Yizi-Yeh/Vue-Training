@@ -22,11 +22,13 @@
       .box {
         width: 500px;
       }
+      /* 選擇直接的子對象 */
       .box > .btnbox {
         width: 100%;
         display: flex;
         justify-content: center;
       }
+      /* 選擇直接的子對象 */
       .box > .btnbox > a {
         padding: 10px 10px;
         color: #fff;
@@ -43,7 +45,8 @@
   </head>
   <body>
     <div id="app">
-      <div class="box">
+      <!-- 在圖片完全載入前先隱藏 -->
+      <div class="box" v-if="isload">
         <div>
           <img
             v-for="(item,i) in imgArr.arr"
@@ -55,12 +58,14 @@
             alt=""
           />
         </div>
-        <div class="btnbox">
+        <!-- 在圖片完全載入前先隱藏 -->
+        <div class="btnbox" v-if="isload">
           <a @click="imgRemove" href="javascript:;">上一張</a>
           <a @click="imgAdd" href="javascript:;">下一張</a>
         </div>
       </div>
-      <img class="load" src="./images/load.gif" alt="" />
+      <!-- 在圖片完全載入前顯現 -->
+      <img v-if="!isload" class="load" src="./images/load.gif" alt="" />
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
     <script src="./js/vue.js"></script>
@@ -73,18 +78,23 @@
 
           const imgIdx = ref(0);
 
+          // 定義一個狀態，紀錄loading是否已完成
+          const isload = ref(false);
+
           const imgAdd = () => {
             imgIdx.value++;
             if (imgIdx.value > imgArr.arr.length) {
               imgIdx.value = 0;
             }
+            console.log(imgIdx.value);
           };
 
           const imgRemove = () => {
             imgIdx.value--;
             if (imgIdx.value < 0) {
-              imgIdx.value = imgArr.arr - 1;
+              imgIdx.value = imgArr.arr.length - 1;
             }
+            console.log(imgIdx.value);
           };
           // onMounted 在 DOM元素渲染完成後才執行
           onMounted(() => {
@@ -92,15 +102,38 @@
             axios
               .get("https://vue-lessons-api.herokuapp.com/photo/list")
               .then((res) => {
-                // 將 data 存入reactive物件
-                imgArr.arr = res.data;
-                console.log(res.data);
+                // 將API陣列丟入load事件
+                hangImgLoad(res.data);
               });
+
+            const hangImgLoad = (ImageArr) => {
+              let i = 0;
+              ImageArr.forEach((image) => {
+                // 建構一個 Image 實體
+                // 相當於 document.createElement('img')。
+                const newImg = new Image();
+                newImg.src = image.url;
+                // 當newImg載入完成後，i++
+                newImg.onload = () => {
+                  i++;
+                  // 若 i++ 等於 API的Array長度，即圖片載入完成
+                  if (ImageArr.length === i) {
+                    console.log("finish");
+                    // reactive物件 ->imgArr.arr會等於載入後的ImageArr
+                    imgArr.arr = ImageArr;
+                    // 更正load狀態
+                    isload.value = true;
+                  }
+                };
+              });
+            };
           });
           return {
             imgArr,
             imgAdd,
             imgRemove,
+            imgIdx,
+            isload,
           };
         },
       };
