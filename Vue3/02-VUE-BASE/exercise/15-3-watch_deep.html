@@ -13,13 +13,18 @@
       const { ref, reactive, watch } = Vue;
       const App = {
         setup() {
+          // ref 中 物件包物件
           const data = ref({ user: {} });
 
           watch(data, (newVal) => {
             console.log(newVal);
           });
 
-          setTimeout(() => {}, 1000);
+          setTimeout(() => {
+            //因為是 ref ，需要利用.value屬性取值
+            //增加一個新 key name
+            data.value.user["name"] = "hello";
+          }, 1000);
 
           return {};
         },
