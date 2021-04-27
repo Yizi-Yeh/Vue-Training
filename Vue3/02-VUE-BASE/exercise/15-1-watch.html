@@ -10,20 +10,34 @@
 
     <script src="./js/vue.js"></script>
     <script>
+      // reactive 要做監控時，需要透過單一的 key 去做監控
       const { reactive, ref, watch } = Vue;
       const App = {
         setup() {
           const idx = ref(0);
+          const data = reactive({ idx: 0 });
 
           // watch(監控的值，觸發的callback)
           // 回傳新的值,舊的值
-          watch(idx, (newIdx, oldIdx) => {
-            console.log("new:", newIdx, "old:", oldIdx);
-          });
+          // watch(idx, (newIdx, oldIdx) => {
+          //   console.log("new:", newIdx, "old:", oldIdx);
+          // });
+
+          //  watch能夠監控的值，是一個只能被讀取的值
+          // 先透過函式 return reactive 的 key ()=>data.idx
+          watch(
+            () => data.idx,
+            (newData, oldDate) => {
+              console.log("new:", newData, "old:", newData);
+            }
+          );
+
           // 利用 setInterval 每秒改變idx.value
           setInterval(() => {
-            idx.value++;
+            // idx.value++;
+            data.idx++;
           }, 1000);
+
           return {};
         },
       };
