@@ -10,32 +10,84 @@
     <div id="app">
       <div class="wait">
         <ul>
-          <li v-for="item in todoWait.content" :key="item.url">
+          <li
+            v-for="(item,idx) in todoWait.content"
+            :key="item.url"
+            @click="handClick(item,idx)"
+          >
             <img :src="item.url" alt="" />
           </li>
         </ul>
       </div>
       <div class="carried">
         <ul>
-          <li>
-            <img alt="" />
+          <li
+            v-for="(item,idx) in todoOver.content"
+            :key="item.url"
+            @click="resetClick(item,idx)"
+          >
+            <img alt="" :src="item.url" />
           </li>
         </ul>
       </div>
-      <div class="winPage">
+      <!-- 若 isWin 為 true ，在winPage class上加上open -->
+      <div :class="['winPage',{open:isWin}]">
         <h1>闖關成功</h1>
       </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
     <script src="./js/vue.js"></script>
     <script>
-      const { reactive, OnMounted } = vue;
+      // 透過使用 watch 觀察 array 的變動，確認順序是否正確
+      const { reactive, OnMounted, watch, ref } = vue;
       const app = {
         setup() {
           // 初始化拼圖
           const todoWait = reactive({ content: [] });
           // 移動後的拼圖
           const todoOver = reactive({ content: [] });
+
+          const winIdx = ref(0);
+          const isWin = ref(false);
+
+          // 利用陣列的順序判斷拼圖是否正確（使用 watch監控idx)
+          // 因為監控的是 reactive 物件，所以需要先 return 一個值 ()=>todoOver.content
+          watch(
+            () => todoOver.content,
+            // 回傳newArray回來
+            (newArr) => {
+              winIdx.value = 0;
+              newArr.forEach((item, idx) => {
+                // 如果我push進物件的idx等於陣列的idx
+                if (item.idx === idx) {
+                  // 因為是 ref，取值需要.value
+                  winIdx.value++;
+                }
+              });
+            },
+            // 因為監控的是 reactive 裡面的array(算是深層結構，需加上deep參數)
+            { deep: true }
+          );
+
+          //將判斷的邏輯與計算邏輯分開
+          watch(winIdx, (newVal) => {
+            if (newVal === 9) {
+              isWin.value = true;
+              console.log("完成遊戲");
+            }
+          });
+
+          const handClick = (item, idx) => {
+            // click後等將拼圖放入over
+            todoOver.content.push(item);
+            todoWait.console.splice(idx, 1);
+          };
+
+          const resetClick = (item, idx) => {
+            // click後等將拼圖放入over
+            todoWait.content.push(item);
+            todoOver.console.splice(idx, 1);
+          };
 
           // 待DOM元素完成之後，再去get API 資料
           OnMounted(() => {
@@ -44,7 +96,12 @@
               console.log(res.data);
             });
           });
-          return {};
+          return {
+            todoWait,
+            todoOver,
+            handClick,
+            resetClick,
+          };
         },
       };
       Vue.createApp(app).mount("#app");
