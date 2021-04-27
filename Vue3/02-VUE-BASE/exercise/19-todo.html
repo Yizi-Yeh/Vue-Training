@@ -10,8 +10,8 @@
     <div id="app">
       <div class="wait">
         <ul>
-          <li>
-            <img src="" alt="" />
+          <li v-for="item in todoWait.content" :key="item.url">
+            <img :src="item.url" alt="" />
           </li>
         </ul>
       </div>
@@ -29,8 +29,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
     <script src="./js/vue.js"></script>
     <script>
+      const { reactive, OnMounted } = vue;
       const app = {
         setup() {
+          // 初始化拼圖
+          const todoWait = reactive({ content: [] });
+          // 移動後的拼圖
+          const todoOver = reactive({ content: [] });
+
+          // 待DOM元素完成之後，再去get API 資料
+          OnMounted(() => {
+            axios.get("./api/puzzle.json").then((res) => {
+              todoWait.content = res.data;
+              console.log(res.data);
+            });
+          });
           return {};
         },
       };
