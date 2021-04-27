@@ -10,24 +10,19 @@
 
     <script src="./js/vue.js"></script>
     <script>
-      const { ref, reactive, watch } = Vue;
+      const { reactive, ref, watch } = Vue;
       const App = {
         setup() {
           const idx = ref(0);
-          // 要針對單一key去做監控(因為是obj)
-          const data = reactive({ idx: 0 });
 
-          // 利用 watch 監控 ref值
-          //（要監控的值,值改變時觸發的callback)
-          watch(
-            // 先 return reactive 的 key
-            () => data.idx,
-            (newIdx, oldIndex) => {
-              console.log("new:", newIdx, "old:", oldIndex);
-            }
-          );
+          // watch(監控的值，觸發的callback)
+          // 回傳新的值,舊的值
+          watch(idx, (newIdx, oldIdx) => {
+            console.log("new:", newIdx, "old:", oldIdx);
+          });
+          // 利用 setInterval 每秒改變idx.value
           setInterval(() => {
-            data.idx++;
+            idx.value++;
           }, 1000);
           return {};
         },
