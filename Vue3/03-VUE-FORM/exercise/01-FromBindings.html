@@ -11,23 +11,38 @@
     <div id="app">
       <div class="input-box">
         <p>E-MAIL</p>
-        <input type="text" placeholder="輸入email" />
+        <input type="text" placeholder="輸入email" v-model="email" />
       </div>
       <div class="input-box">
         <p>PASSWORD</p>
-        <input type="text" placeholder="輸入密碼" />
+        <input type="text" placeholder="輸入密碼" v-model="password" />
       </div>
       <div class="input-box">
-        <input type="checkbox" id="checkbox" />
+        <!-- checkbox 以 true/false 控制開關 -->
+        <input type="checkbox" id="checkbox" v-model="check" />
         <label for="checkbox">我已閱讀使用者條款</label>
       </div>
-      <a class="btn">送出</a>
+      <a class="btn" @click="handSubmit">送出</a>
     </div>
     <script src="./js/vue.js"></script>
     <script>
+      const { ref } = Vue;
       const App = {
         setup() {
-          return {};
+          const email = ref("");
+          const password = ref("");
+          // checkbox
+          const check = ref(false);
+
+          const handSubmit = () => {
+            console.log(email, password, check);
+          };
+          return {
+            email,
+            password,
+            check,
+            handSubmit,
+          };
         },
       };
 
