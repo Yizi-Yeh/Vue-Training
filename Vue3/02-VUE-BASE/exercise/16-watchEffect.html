@@ -10,13 +10,27 @@
 
     <script src="./js/vue.js"></script>
     <script>
-      const { ref, reactive } = Vue;
+      const { ref, reactive, watchEffect } = Vue;
       const App = {
         setup() {
           const num = ref(0);
           const numData = reactive({ idx: 0 });
 
-          setTimeout(() => {
+          let timer = null;
+
+          // 不需要傳入監控資料，直接傳入callback
+          // watchEffect 在初始化時就會執行
+          // 一開始會先執行，故顯示 ref(0)，待資料改變時，再次執行 ref(1)
+          // watchEffect也可以停止監控
+          const stop = watchEffect(() => {
+            console.log(num.value);
+            if (num.value >= 4) {
+              stop();
+              clearInterval(timer);
+            }
+          });
+
+          timer = setTimeout(() => {
             num.value++;
             numData.idx++;
           }, 1000);
