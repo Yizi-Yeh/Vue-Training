@@ -10,21 +10,67 @@
   <body>
     <div id="app">
       <div class="select-box">
-        <select>
+        <select v-model="cityActive">
           <option disabled value="">請選擇縣市</option>
+          <!-- 第一個放的是預設 -->
+          <option
+            v-for="item in twZip.city"
+            :value="item.name"
+            :key="item.name"
+          >
+            {{item.name}}
+          </option>
         </select>
-        <select>
+        <select v-model="areaActive">
           <option disabled value="">請選擇區域</option>
+          <option
+            v-for="item in twZip.area"
+            :value="item.name"
+            :key="item.name"
+          >
+            {{item.name}}
+          </option>
         </select>
       </div>
-      <a class="btn">送出</a>
+      <a class="btn" @click="handSubmit">送出</a>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
     <script src="./js/vue.js"></script>
     <script>
+      const { onMounted, reactive, ref, watch } = Vue;
       const App = {
         setup() {
-          return {};
+          // twZip reactive物件，包含 city area 兩個陣列
+          const twZip = reactive({ city: [], area: [] });
+
+          const cityActive = ref("");
+          const areaActive = ref("");
+
+          // 監控 cityActive 的變化
+          // 透過 watch 做資料處理，篩選出我們需要的資料
+          watch(cityActive, (newCity) => {
+            const newArr = twZip.city.filter((city) => {
+              city.name === newCity;
+              areaActive.value = "";
+              twZip.area = newArr[0].area;
+            });
+          });
+
+          const handSubmit = () => {
+            console.log(cityActive.value);
+            console.log(areaActive.value);
+          };
+
+          onMounted(() => {
+            axios
+              .get("https://vue-lessons-api.herokuapp.com/city/list")
+              .then((res) => {
+                twZip.city = res.data.twzip.city;
+
+                console.log(res.data);
+              });
+          });
+          return { twZip, cityActive, areaActive, handSubmit };
         },
       };
 
