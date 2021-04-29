@@ -5,7 +5,10 @@
 
 <script>
 export default {
-    props:['msg'],
+    // 傳入 props 時，不建議以 array 方式傳入（未能明確告知型別）
+    props:{
+        msg:String,
+    },
     // props必須透過 setup 函式回傳
     setup(props){
         console.log(props)
