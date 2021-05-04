@@ -1,6 +1,8 @@
 <template>
-<!-- directive 定義後，回到 DOM 元素身上 -->
-  <input  v-focus ref="textInput" type="text" id="textVar" placeholder="input text">
+<!-- directive 定義後，回到 DOM 元素身上 v-*** -->
+  <input  v-focus ref="textInput" type="text" id="textVar" placeholder="input text"/>
+  <!-- v-price 語法  -->
+  <h1 v-price="122321"></h1>
 </template>
 
 <script>
