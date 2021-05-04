@@ -1,18 +1,44 @@
 <template>
-<PropsTest :msg="data"/>
+<!-- function 也可透過屬性傳遞給子元件 -->
+<PropsTest :str="str"
+    :bool="bool"
+    :num="num"
+    :arr="arr"
+    :obj="obj"
+    :handClickFn="handClickFn"
+    />
 </template>
 
 <script>
 import PropsTest from "@/components/PropsTest.vue"
+import { reactive, ref } from 'vue'
 
 export default {
 components:{
   PropsTest
 },
 setup(){
-  const data = ref("hello")
+  const str = ref('its str')
+
+  const bool = ref(true)
+
+  const num = ref(0)
+
+  const arr = reactive([])
+
+  const obj = reactive({})
+
+  const handClickFn = () =>{
+
+  }
+
   return {
-    data
+    str,
+    bool,
+    num,
+    arr,
+    obj,
+    handClickFn
     }
   }
 }
