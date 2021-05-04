@@ -20,12 +20,19 @@ app.directive("focus",{
 })
 
 app.dircetive("price",{
+  // mounted -> render 後會執行
   // 第一個參數為回傳的el 
   // 第二個為傳回來的值(回傳一個 object value:123123)
   mounted(el,binding){
     const p = numPrice(binding.value)
     el.innerHTML = p
     console.log(binding.value)
+  },
+  // 當傳入值被改變時，會被觸發
+  updated(el,binding){
+  // 每次資料改變時需要同步他，故使用 updated 生命週期
+    const p = numPrice(binding.value)
+    el.innerHTML = p
   }
 })
 app.mount("#app")
