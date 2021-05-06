@@ -12,7 +12,7 @@ export default {
 
 <template>
   <img alt="Vue logo" src="./assets/logo.png" />
-  <!-- <MousePosition /> -->
+  <MousePosition />
   <!-- <StateTodo /> -->
   <!-- <StateTodo /> -->
   <!-- <FetchData /> -->
