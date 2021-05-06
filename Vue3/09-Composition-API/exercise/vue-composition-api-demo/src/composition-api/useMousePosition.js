@@ -25,8 +25,9 @@ export function MousePosition(){
         window.removeEventListener('mousemove',posUpdate)
     })
 
-    // 使用展開運算子
+
     return {
+       // 使用展開運算子拆出變數
         ...toRefs(pos),
         name
     }
