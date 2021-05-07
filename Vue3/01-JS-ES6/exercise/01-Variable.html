@@ -6,6 +6,33 @@
     <title>let 與 const</title>
   </head>
   <body>
-    <script></script>
+    <script>
+      // 在 if 判斷式 外依然能console.log (a)
+      if (true) {
+      // 使用  var 會跑到全域
+        var a = "123";
+      }
+      console.log(a);
+
+      if (true) {
+      // 透過 { } 界定使用範圍
+      // 大括號外取得不到 a
+        let a = "123";
+      }
+
+      if (true) {
+      // 使用 let 宣告後可修改
+      let txt = "0"
+      txt = "123"
+      console.log(txt)
+      }
+
+      if (true) {
+      // 使用 const 宣告後即無法修改
+      const txt = "0"
+      txt = "123"
+      console.log(txt)
+      }
+    </script>
   </body>
 </html>
