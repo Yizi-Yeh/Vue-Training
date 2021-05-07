@@ -13,9 +13,9 @@ export default {
 <template>
   <img alt="Vue logo" src="./assets/logo.png" />
   <MousePosition />
-  <!-- <StateTodo /> -->
-  <!-- <StateTodo /> -->
-  <!-- <FetchData /> -->
+  <StateTodo />
+  <StateTodo />
+  <FetchData />
 </template>
 
 <style lang="scss">
