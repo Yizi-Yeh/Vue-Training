@@ -6,6 +6,13 @@
     <title>ES Module</title>
   </head>
   <body>
-    <script></script>
+    // s語法改為es6 module 模式
+    <script type="module">
+      // Add 可自定義從default丟出的名稱
+      // 以解構方式取出
+      import Add, { Name, age } from "./js/Tools.js";
+
+      console.log(Add(3, 2));
+    </script>
   </body>
 </html>
