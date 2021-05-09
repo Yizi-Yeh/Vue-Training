@@ -1,25 +1,15 @@
 import { createStore } from "vuex";
+import state  from './state.js'
+import actions from './actions.js'
+import mutations from './mutations'
+import getters from './getters'
 
 export default createStore({
-  state: {
-    isOpen:false
-  },
-  actions: {
-    handMenuOpen(context){
-      // context中的commit方法
-      context.commit('handOpenState')
-    }
-  },
-  mutations: {
-    handOpenState(state){
-      state.isOpen = true
-    }
-  },
+  // 透過解構方式放到createStore中
+  state,
+  actions,
+  mutations,
+  getters
   // 透過getters 取得 state
   // 先在getters處理資料
-  getters: {
-    isOpen(state){
-      return state.isOpen
-    }
-  },
 });
