@@ -1,6 +1,5 @@
 import { createStore } from "vuex";
 import apiGetphotoRequest from '../api'
-import axios from 'axios'
 export default createStore({
   state: {
     photoArr: [],
@@ -9,15 +8,16 @@ export default createStore({
   },
   actions: {
     // action 後的資料 commit 到 mutation，先將他解構出來
-    handInit({commit})
+  async handInit({commit})
     {
-      // res => return promise 物件
-      const res = apiGetphotoRequest()
-      res.then(response=>{
-        commit('init',response.data)
-        return response.data
-      })
-    
+      try{
+        // 等到抓回  apiGetphotoRequest 再
+        const res = await apiGetphotoRequest()
+        commit('init',res.data)
+        return res.data
+      } catch {
+        console.error(error.response.data)
+      }
     },
     // 解構 {commit}}
     handLoadState({commit},bool){
