@@ -1,4 +1,5 @@
 export default {
+// 透過 namespaced:true 可在各 module 間做區分
 namespaced:true,
   state:{
       token:''
